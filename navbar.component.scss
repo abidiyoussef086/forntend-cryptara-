@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+$bg:      #05080f;
+$surface: #0b1120;
+$border:  rgba(255,255,255,0.07);
+$gold:    #f0b429;
+$teal:    #00f5c4;
+$text:    #dde4f0;
+$muted:   #4e6074;
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(5, 8, 15, 0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid $border;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.nav-logo {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+  border-radius: 6px;
+  filter: drop-shadow(0 2px 8px rgba(240,180,41,0.25));
+}
+
+.nav-links {
+  display: flex;
+  gap: 0.25rem;
+
+  a {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: $muted;
+    text-decoration: none;
+    padding: 0.4rem 0.75rem;
+    border-radius: 8px;
+    transition: color 0.2s, background 0.2s;
+
+    &:hover { color: $text; background: rgba(255,255,255,0.04); }
+    &.active { color: $gold; background: rgba(240,180,41,0.08); }
+  }
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.balance-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(0,245,196,0.06);
+  border: 1px solid rgba(0,245,196,0.15);
+  border-radius: 99px;
+  padding: 0.35rem 0.9rem;
+
+  .balance-label {
+    font-size: 0.7rem;
+    color: $muted;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .balance-val {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: $teal;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(240,180,41,0.15);
+  border: 1px solid rgba(240,180,41,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: $gold;
+
+  img { width: 100%; height: 100%; object-fit: cover; }
+}
+
+.username {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: $text;
+}
+
+.logout-btn {
+  width: 30px;
+  height: 30px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid $border;
+  border-radius: 8px;
+  color: $muted;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s, border-color 0.2s;
+
+  &:hover {
+    color: #ff4d6d;
+    border-color: rgba(255,77,109,0.3);
+  }
+}

@@ -1,0 +1,88 @@
+$card: #0f1828; $border: rgba(255,255,255,0.07);
+$gold: #f0b429; $text: #dde4f0; $muted: #4e6074;
+$up: #00f5c4; $down: #ff4d6d;
+
+:host { display: block; }
+
+.portfolio {
+  background: $card;
+  border: 1px solid $border;
+  border-radius: 14px;
+  font-family: 'DM Sans', sans-serif;
+  overflow: hidden;
+}
+
+.panel-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 1.25rem 0.75rem;
+  border-bottom: 1px solid $border;
+}
+
+.panel-title {
+  font-size: 0.78rem; font-weight: 700;
+  color: $muted; text-transform: uppercase; letter-spacing: 0.08em;
+}
+
+.refresh-btn {
+  background: none; border: none; color: $muted;
+  font-size: 1rem; cursor: pointer;
+  transition: color 0.2s, transform 0.3s;
+  &:hover { color: $gold; transform: rotate(180deg); }
+}
+
+.loading {
+  padding: 2rem; text-align: center;
+  span { font-size: 0.85rem; color: $muted; }
+}
+
+.summary-row {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 0; border-bottom: 1px solid $border;
+}
+
+.summary-item {
+  padding: 1rem 1.25rem;
+  border-right: 1px solid $border;
+  &:last-child { border-right: none; }
+
+  .s-label { display: block; font-size: 0.72rem; color: $muted; margin-bottom: 0.3rem; }
+  .s-val {
+    font-size: 1rem; font-weight: 700; color: $text;
+    font-variant-numeric: tabular-nums;
+    &.up { color: $up; }
+    &.down { color: $down; }
+  }
+}
+
+.holdings-header {
+  display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr 1.5fr;
+  padding: 0.5rem 1.25rem;
+  border-bottom: 1px solid $border;
+  font-size: 0.68rem; color: $muted;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  .right { text-align: right; }
+}
+
+.holdings-list { min-height: 60px; }
+
+.holding-row {
+  display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr 1.5fr;
+  padding: 0.7rem 1.25rem;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  align-items: center;
+  &:hover { background: rgba(255,255,255,0.02); }
+}
+
+.h-sym { font-size: 0.875rem; font-weight: 700; color: $text; }
+.h-val { font-size: 0.8rem; color: $muted; font-variant-numeric: tabular-nums; &.right { text-align: right; } }
+.h-pnl {
+  font-size: 0.8rem; font-weight: 600; font-variant-numeric: tabular-nums;
+  &.right { text-align: right; }
+  &.up { color: $up; } &.down { color: $down; }
+  small { font-size: 0.7rem; opacity: 0.8; margin-left: 0.3rem; }
+}
+
+.empty {
+  padding: 1.5rem 1.25rem;
+  span { font-size: 0.82rem; color: $muted; }
+}

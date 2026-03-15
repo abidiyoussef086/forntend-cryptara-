@@ -1,0 +1,56 @@
+<div class="portfolio">
+  <div class="panel-header">
+    <span class="panel-title">Portfolio</span>
+    <button class="refresh-btn" (click)="load()">↻</button>
+  </div>
+
+  <div class="loading" *ngIf="loading">
+    <span>Loading...</span>
+  </div>
+
+  <ng-container *ngIf="!loading && portfolio">
+    <!-- Summary row -->
+    <div class="summary-row">
+      <div class="summary-item">
+        <span class="s-label">Cash Balance</span>
+        <span class="s-val">${{ portfolio.cashBalance | number:'1.2-2' }}</span>
+      </div>
+      <div class="summary-item">
+        <span class="s-label">Total Value</span>
+        <span class="s-val">${{ portfolio.totalValue | number:'1.2-2' }}</span>
+      </div>
+      <div class="summary-item">
+        <span class="s-label">Total P&L</span>
+        <span class="s-val pnl" [class.up]="isPositive(portfolio.totalPnl)" [class.down]="!isPositive(portfolio.totalPnl)">
+          {{ isPositive(portfolio.totalPnl) ? '+' : '' }}${{ portfolio.totalPnl | number:'1.2-2' }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Holdings -->
+    <div class="holdings-header">
+      <span>Asset</span>
+      <span class="right">Qty</span>
+      <span class="right">Avg Buy</span>
+      <span class="right">Current</span>
+      <span class="right">P&L</span>
+    </div>
+
+    <div class="holdings-list">
+      <div class="holding-row" *ngFor="let h of portfolio.holdings">
+        <span class="h-sym">{{ h.symbol.replace('USDT', '') }}</span>
+        <span class="h-val right">{{ h.quantity | number:'1.4-6' }}</span>
+        <span class="h-val right">${{ h.avgBuyPrice | number:'1.2-4' }}</span>
+        <span class="h-val right">${{ h.currentPrice | number:'1.2-4' }}</span>
+        <span class="h-pnl right" [class.up]="isPositive(h.pnl)" [class.down]="!isPositive(h.pnl)">
+          {{ isPositive(h.pnl) ? '+' : '' }}${{ h.pnl | number:'1.2-2' }}
+          <small>({{ isPositive(h.pnlPercent) ? '+' : '' }}{{ h.pnlPercent | number:'1.2-2' }}%)</small>
+        </span>
+      </div>
+
+      <div class="empty" *ngIf="portfolio.holdings.length === 0">
+        <span>No holdings yet. Place your first trade!</span>
+      </div>
+    </div>
+  </ng-container>
+</div>

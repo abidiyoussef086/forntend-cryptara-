@@ -1,0 +1,147 @@
+<div class="auth-wrapper">
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+
+  <div class="ticker-tape">
+    <div class="ticker-inner">
+      <span class="up">BTC $67,420 ▲2.4%</span>
+      <span class="sep">·</span>
+      <span class="up">ETH $3,512 ▲1.8%</span>
+      <span class="sep">·</span>
+      <span class="down">SOL $142 ▼0.9%</span>
+      <span class="sep">·</span>
+      <span class="up">BNB $598 ▲3.1%</span>
+      <span class="sep">·</span>
+      <span class="up">XRP $0.58 ▲0.5%</span>
+      <span class="sep">·</span>
+      <span class="down">ADA $0.44 ▼1.2%</span>
+      <span class="sep">·</span>
+      <span class="up">BTC $67,420 ▲2.4%</span>
+      <span class="sep">·</span>
+      <span class="up">ETH $3,512 ▲1.8%</span>
+    </div>
+  </div>
+
+  <div class="auth-card">
+    <!-- Logo -->
+    <div class="logo">
+      <img
+        src="https://res.cloudinary.com/dlsr1ex0d/image/upload/v1772573282/cryptara_bdtjoj.jpg"
+        alt="Cryptara"
+        class="logo-img"
+      />
+    </div>
+
+    <h1 class="title">Create account</h1>
+    <p class="subtitle">Start with <span class="highlight">$10,000</span> paper trading balance</p>
+
+    <!-- Error alert -->
+    <div class="alert" *ngIf="error">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <circle cx="8" cy="8" r="7" stroke="#ff4d6d" stroke-width="1.5"/>
+        <line x1="8" y1="5" x2="8" y2="9" stroke="#ff4d6d" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="8" cy="11.5" r="0.75" fill="#ff4d6d"/>
+      </svg>
+      {{ error }}
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+      <!-- Username -->
+      <div class="field" [class.invalid]="username.invalid && username.touched">
+        <label>Username</label>
+        <div class="input-wrap">
+          <svg class="input-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <circle cx="8" cy="5" r="3" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M2 13c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <input
+            type="text"
+            formControlName="username"
+            placeholder="satoshi_nakamoto"
+            autocomplete="username"
+          />
+        </div>
+        <span class="field-error" *ngIf="username.invalid && username.touched">
+          <ng-container *ngIf="username.errors?.['required']">Username is required</ng-container>
+          <ng-container *ngIf="username.errors?.['minlength']">Minimum 3 characters</ng-container>
+          <ng-container *ngIf="username.errors?.['maxlength']">Maximum 30 characters</ng-container>
+        </span>
+      </div>
+
+      <!-- Email -->
+      <div class="field" [class.invalid]="email.invalid && email.touched">
+        <label>Email address</label>
+        <div class="input-wrap">
+          <svg class="input-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <rect x="1" y="3" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/>
+            <polyline points="1,3 8,9 15,3" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          </svg>
+          <input
+            type="email"
+            formControlName="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+          />
+        </div>
+        <span class="field-error" *ngIf="email.invalid && email.touched">
+          {{ email.errors?.['required'] ? 'Email is required' : 'Enter a valid email' }}
+        </span>
+      </div>
+
+      <!-- Password -->
+      <div class="field" [class.invalid]="password.invalid && password.touched">
+        <label>Password</label>
+        <div class="input-wrap">
+          <svg class="input-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M5 7V5a3 3 0 016 0v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="Min. 6 chars, 1 uppercase, 1 number"
+            autocomplete="new-password"
+          />
+          <button type="button" class="toggle-pw" (click)="showPassword = !showPassword">
+            <svg *ngIf="!showPassword" width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+            <svg *ngIf="showPassword" width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <line x1="2" y1="2" x2="14" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M6.5 4.2A6.5 6.5 0 0115 8s-.8 1.6-2.2 2.8M4.5 5.5C2.8 6.6 1 8 1 8s2.5 5 7 5a6.8 6.8 0 002.5-.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Password strength bar -->
+        <div class="strength-bar" *ngIf="password.value">
+          <div class="strength-track">
+            <div class="strength-fill" [class]="passwordStrength"></div>
+          </div>
+          <span class="strength-label" [class]="passwordStrength">
+            {{ passwordStrength | titlecase }} password
+          </span>
+        </div>
+
+        <span class="field-error" *ngIf="password.invalid && password.touched">
+          <ng-container *ngIf="password.errors?.['required']">Password is required</ng-container>
+          <ng-container *ngIf="password.errors?.['minlength']">Minimum 6 characters</ng-container>
+          <ng-container *ngIf="password.errors?.['weakPassword']">Must include uppercase letter and number</ng-container>
+        </span>
+      </div>
+
+      <button type="submit" class="btn-submit" [class.loading]="loading" [disabled]="loading">
+        <span class="btn-text" *ngIf="!loading">Create account</span>
+        <span class="btn-loader" *ngIf="loading">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        </span>
+      </button>
+    </form>
+
+    <p class="switch-link">
+      Already have an account?
+      <a routerLink="/auth/login">Sign in</a>
+    </p>
+  </div>
+</div>

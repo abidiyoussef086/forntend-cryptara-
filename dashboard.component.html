@@ -1,0 +1,211 @@
+<app-navbar></app-navbar>
+
+<div class="dashboard">
+
+  <!-- ── Top ticker bar ──────────────────────────────────────── -->
+  <div class="ticker-bar" *ngIf="ticker">
+    <div class="ticker-symbol">
+      <span class="t-base">{{ baseCurrency }}</span>
+      <span class="t-quote">/ USDT</span>
+    </div>
+    <div class="ticker-price" [class.up]="isPositive(ticker.priceChangePercent)" [class.down]="!isPositive(ticker.priceChangePercent)">
+      ${{ ticker.price | number:'1.2-4' }}
+    </div>
+    <div class="ticker-stat">
+      <span class="ts-label">24h Change</span>
+      <span class="ts-val" [class.up]="isPositive(ticker.priceChangePercent)" [class.down]="!isPositive(ticker.priceChangePercent)">
+        {{ isPositive(ticker.priceChangePercent) ? '+' : '' }}{{ ticker.priceChangePercent | number:'1.2-2' }}%
+      </span>
+    </div>
+    <div class="ticker-stat">
+      <span class="ts-label">24h High</span>
+      <span class="ts-val">${{ ticker.high | number:'1.2-4' }}</span>
+    </div>
+    <div class="ticker-stat">
+      <span class="ts-label">24h Low</span>
+      <span class="ts-val">${{ ticker.low | number:'1.2-4' }}</span>
+    </div>
+    <div class="ticker-stat">
+      <span class="ts-label">Volume</span>
+      <span class="ts-val">{{ ticker.volume | number:'1.0-0' }}</span>
+    </div>
+  </div>
+
+  <div class="ticker-bar skeleton" *ngIf="!ticker">
+    <div class="skel-block w200"></div>
+    <div class="skel-block w100"></div>
+    <div class="skel-block w120"></div>
+    <div class="skel-block w120"></div>
+  </div>
+
+  <!-- ── Main grid ───────────────────────────────────────────── -->
+  <div class="main-grid">
+
+    <!-- Column 1: Watchlist -->
+    <div class="col-watchlist">
+      <app-watchlist (symbolSelected)="onSymbolSelected($event)"></app-watchlist>
+    </div>
+
+    <!-- Column 2: Order book + Recent trades -->
+    <div class="col-book">
+      <div class="book-wrap">
+        <app-order-book [symbol]="selectedSymbol"></app-order-book>
+      </div>
+      <div class="trades-wrap">
+        <app-recent-trades [symbol]="selectedSymbol"></app-recent-trades>
+      </div>
+    </div>
+
+    <!-- Column 3: Order form -->
+    <div class="col-order">
+      <div class="order-card">
+
+        <div class="order-header">
+          <span class="panel-title">Place Order</span>
+          <span class="sym-tag">{{ selectedSymbol }}</span>
+        </div>
+
+        <!-- Buy / Sell tabs -->
+        <div class="side-tabs">
+          <button
+            class="side-tab buy"
+            [class.active]="orderSide === 'buy'"
+            (click)="setSide('buy')"
+          >Buy {{ baseCurrency }}</button>
+          <button
+            class="side-tab sell"
+            [class.active]="orderSide === 'sell'"
+            (click)="setSide('sell')"
+          >Sell {{ baseCurrency }}</button>
+        </div>
+
+        <!-- Order type -->
+        <div class="type-tabs">
+          <button class="type-tab" [class.active]="orderType === 'market'" (click)="setType('market')">Market</button>
+          <button class="type-tab" [class.active]="orderType === 'limit'" (click)="setType('limit')">Limit</button>
+        </div>
+
+        <!-- Market price display -->
+        <div class="market-price" *ngIf="ticker">
+          <span class="mp-label">Market Price</span>
+          <span class="mp-val" [class.up]="isPositive(ticker.priceChangePercent)" [class.down]="!isPositive(ticker.priceChangePercent)">
+            ${{ ticker.price | number:'1.2-4' }}
+          </span>
+        </div>
+
+        <!-- Form -->
+        <form [formGroup]="orderForm" (ngSubmit)="placeOrder()" novalidate>
+
+          <!-- Limit price -->
+          <div class="form-field" *ngIf="orderType === 'limit'">
+            <label>Limit Price (USDT)</label>
+            <div class="inp-wrap">
+              <span class="inp-prefix">$</span>
+              <input type="number" formControlName="price" placeholder="0.00" step="0.01" min="0"/>
+            </div>
+          </div>
+
+          <!-- Quantity -->
+          <div class="form-field" [class.err]="orderForm.get('quantity')!.invalid && orderForm.get('quantity')!.touched">
+            <label>Amount ({{ baseCurrency }})</label>
+            <div class="inp-wrap">
+              <input type="number" formControlName="quantity" placeholder="0.0000" step="0.0001" min="0.0001"/>
+              <span class="inp-suffix">{{ baseCurrency }}</span>
+            </div>
+            <span class="ferr" *ngIf="orderForm.get('quantity')!.invalid && orderForm.get('quantity')!.touched">
+              Enter a valid amount
+            </span>
+          </div>
+
+          <!-- Quick amount buttons -->
+          <div class="quick-btns">
+            <button type="button" class="quick-btn" *ngFor="let pct of [25, 50, 75, 100]">{{ pct }}%</button>
+          </div>
+
+          <!-- Estimated total -->
+          <div class="est-total" *ngIf="estimatedTotal > 0">
+            <span class="et-label">Estimated Total</span>
+            <span class="et-val">${{ estimatedTotal | number:'1.2-2' }}</span>
+          </div>
+
+          <!-- Success / Error messages -->
+          <div class="msg success" *ngIf="orderSuccess">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <circle cx="7" cy="7" r="6" stroke="#00f5c4" stroke-width="1.4"/>
+              <polyline points="4,7 6.5,9.5 10,5" stroke="#00f5c4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            {{ orderSuccess }}
+          </div>
+          <div class="msg error" *ngIf="orderError">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <circle cx="7" cy="7" r="6" stroke="#ff4d6d" stroke-width="1.4"/>
+              <line x1="7" y1="4" x2="7" y2="7.5" stroke="#ff4d6d" stroke-width="1.4" stroke-linecap="round"/>
+              <circle cx="7" cy="10" r="0.7" fill="#ff4d6d"/>
+            </svg>
+            {{ orderError }}
+          </div>
+
+          <!-- Submit -->
+          <button
+            type="submit"
+            class="btn-order"
+            [class.buy]="orderSide === 'buy'"
+            [class.sell]="orderSide === 'sell'"
+            [disabled]="orderLoading"
+          >
+            <span *ngIf="!orderLoading">
+              {{ orderSide === 'buy' ? 'Buy' : 'Sell' }} {{ baseCurrency }}
+            </span>
+            <span class="ldots" *ngIf="orderLoading">
+              <span></span><span></span><span></span>
+            </span>
+          </button>
+
+        </form>
+      </div>
+    </div>
+
+    <!-- Column 4: Portfolio + Open orders -->
+    <div class="col-right">
+
+      <!-- Tab switcher -->
+      <div class="tab-bar">
+        <button class="tab-btn" [class.active]="activeTab === 'portfolio'" (click)="activeTab = 'portfolio'">Portfolio</button>
+        <button class="tab-btn" [class.active]="activeTab === 'orders'" (click)="activeTab = 'orders'; loadOrders()">Open Orders</button>
+      </div>
+
+      <!-- Portfolio tab -->
+      <div *ngIf="activeTab === 'portfolio'">
+        <app-portfolio></app-portfolio>
+      </div>
+
+      <!-- Open orders tab -->
+      <div class="open-orders" *ngIf="activeTab === 'orders'">
+        <div class="oo-header">
+          <span>Pair</span>
+          <span>Side</span>
+          <span>Type</span>
+          <span class="right">Price</span>
+          <span class="right">Qty</span>
+          <span class="right">Action</span>
+        </div>
+
+        <div class="oo-row" *ngFor="let order of openOrders">
+          <span class="oo-sym">{{ order.symbol }}</span>
+          <span class="oo-side" [class.buy]="order.side === 'buy'" [class.sell]="order.side === 'sell'">
+            {{ order.side | uppercase }}
+          </span>
+          <span class="oo-type">{{ order.type | uppercase }}</span>
+          <span class="oo-val right">{{ order.price ? ('$' + (order.price | number:'1.2-4')) : 'MARKET' }}</span>
+          <span class="oo-val right">{{ order.quantity | number:'1.4-4' }}</span>
+          <button class="cancel-btn" (click)="cancelOrder(order._id)">Cancel</button>
+        </div>
+
+        <div class="oo-empty" *ngIf="openOrders.length === 0">
+          <span>No open orders</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

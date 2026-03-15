@@ -1,0 +1,217 @@
+<div class="page-wrapper">
+
+  <!-- ── Ticker tape ───────────────────────────────────────────── -->
+  <div class="ticker-tape">
+    <div class="ticker-inner">
+      <span class="up">BTC $67,420 ▲2.4%</span><span class="sep">·</span>
+      <span class="up">ETH $3,512 ▲1.8%</span><span class="sep">·</span>
+      <span class="down">SOL $142 ▼0.9%</span><span class="sep">·</span>
+      <span class="up">BNB $598 ▲3.1%</span><span class="sep">·</span>
+      <span class="up">XRP $0.58 ▲0.5%</span><span class="sep">·</span>
+      <span class="down">ADA $0.44 ▼1.2%</span><span class="sep">·</span>
+      <span class="up">DOGE $0.18 ▲5.2%</span><span class="sep">·</span>
+      <span class="down">MATIC $0.92 ▼0.7%</span><span class="sep">·</span>
+      <span class="up">BTC $67,420 ▲2.4%</span><span class="sep">·</span>
+      <span class="up">ETH $3,512 ▲1.8%</span>
+    </div>
+  </div>
+
+  <!-- ── Hero / Login section ──────────────────────────────────── -->
+  <section class="hero">
+    <div class="bg-grid"></div>
+    <div class="bg-glow gl"></div>
+    <div class="bg-glow gr"></div>
+
+    <div class="hero-inner">
+
+      <!-- LEFT brand panel -->
+      <div class="brand-panel">
+        <div class="logo">
+          <img src="https://res.cloudinary.com/dlsr1ex0d/image/upload/v1772573282/cryptara_bdtjoj.jpg" alt="Cryptara" class="logo-img"/>
+        </div>
+
+        <h1 class="headline">Trade crypto<br/><span class="gold">like a pro.</span></h1>
+        <p class="brand-sub">Real-time markets. Paper trading. Zero risk.<br/>Start with $10,000 in virtual balance.</p>
+
+        <div class="stats-row">
+          <div class="stat"><span class="sv">6+</span><span class="sl">Markets</span></div>
+          <div class="sdiv"></div>
+          <div class="stat"><span class="sv">Live</span><span class="sl">Binance Feed</span></div>
+          <div class="sdiv"></div>
+          <div class="stat"><span class="sv">$10K</span><span class="sl">Starting Balance</span></div>
+        </div>
+
+        <ul class="features">
+          <li><span class="fi">⚡</span><div><strong>Real-time order book</strong><p>Live bids & asks streamed via WebSocket</p></div></li>
+          <li><span class="fi">📊</span><div><strong>Portfolio tracking</strong><p>Monitor your holdings and P&L in real time</p></div></li>
+          <li><span class="fi">🔒</span><div><strong>Secure by design</strong><p>JWT auth with Redis session management</p></div></li>
+        </ul>
+
+        <div class="coin-wrap">
+          <img src="https://res.cloudinary.com/dlsr1ex0d/image/upload/v1772573258/crypto_laidnp.jpg" alt="Crypto coins"/>
+          <div class="coin-fade"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT form panel -->
+      <div class="form-panel">
+        <div class="form-card">
+          <div class="form-header">
+            <h2>Welcome back</h2>
+            <p>Sign in to your Cryptara account</p>
+          </div>
+
+          <!-- Error toast -->
+          <div class="toast" *ngIf="error">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <circle cx="7" cy="7" r="6" stroke="#ff4d6d" stroke-width="1.4"/>
+              <line x1="7" y1="4" x2="7" y2="7.5" stroke="#ff4d6d" stroke-width="1.4" stroke-linecap="round"/>
+              <circle cx="7" cy="10" r="0.7" fill="#ff4d6d"/>
+            </svg>
+            <span>{{ error }}</span>
+            <button class="toast-x" (click)="error = ''">✕</button>
+          </div>
+
+          <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+
+            <div class="field" [class.err]="email.invalid && email.touched">
+              <label>Email address</label>
+              <div class="inp-wrap">
+                <svg class="inp-ico" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <rect x="1" y="2.5" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
+                  <polyline points="1,2.5 7,8 13,2.5" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+                </svg>
+                <input type="email" formControlName="email" placeholder="you@example.com" autocomplete="email"/>
+              </div>
+              <span class="ferr" *ngIf="email.invalid && email.touched">
+                {{ email.errors?.['required'] ? 'Email is required.' : 'Enter a valid email.' }}
+              </span>
+            </div>
+
+            <div class="field" [class.err]="password.invalid && password.touched">
+              <div class="label-row">
+                <label>Password</label>
+                <a href="#" class="forgot">Forgot password?</a>
+              </div>
+              <div class="inp-wrap">
+                <svg class="inp-ico" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <rect x="2" y="6" width="10" height="7" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
+                  <path d="M4 6V4.5a3 3 0 016 0V6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                </svg>
+                <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="••••••••" autocomplete="current-password"/>
+                <button type="button" class="eye" (click)="showPassword = !showPassword">
+                  <svg *ngIf="!showPassword" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <path d="M1 7s2.2-4 6-4 6 4 6 4-2.2 4-6 4-6-4-6-4z" stroke="currentColor" stroke-width="1.3"/>
+                    <circle cx="7" cy="7" r="1.7" stroke="currentColor" stroke-width="1.3"/>
+                  </svg>
+                  <svg *ngIf="showPassword" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <line x1="1.5" y1="1.5" x2="12.5" y2="12.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                    <path d="M5.5 4A5.8 5.8 0 0113 7s-.7 1.4-2 2.4M3.8 4.6C2.4 5.6 1 7 1 7s2.2 4 6 4a5.8 5.8 0 002.2-.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                  </svg>
+                </button>
+              </div>
+              <span class="ferr" *ngIf="password.invalid && password.touched">
+                {{ password.errors?.['required'] ? 'Password is required.' : 'Minimum 6 characters.' }}
+              </span>
+            </div>
+
+            <button type="submit" class="btn-submit" [disabled]="loading">
+              <span *ngIf="!loading">Sign in to Cryptara</span>
+              <span class="ldots" *ngIf="loading"><span></span><span></span><span></span></span>
+            </button>
+
+            <div class="or-divider"><span>or</span></div>
+
+            <p class="reg-cta">New to Cryptara? <a routerLink="/auth/register">Create a free account →</a></p>
+          </form>
+
+          <div class="trust">
+            <span>🔒 Encrypted</span>
+            <span class="dot">·</span>
+            <span>⚡ Live markets</span>
+            <span class="dot">·</span>
+            <span>🎯 Zero fees</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FAQ ───────────────────────────────────────────────────── -->
+  <section class="faq">
+    <div class="faq-inner">
+      <div class="section-tag">FAQ</div>
+      <h2 class="section-title">Got questions?</h2>
+      <p class="section-sub">Everything you need to know about Cryptara.</p>
+
+      <div class="faq-grid">
+        <div class="faq-card">
+          <div class="faq-q"><span>💰</span> Is Cryptara free to use?</div>
+          <p>Yes, completely free. You get a $10,000 virtual balance to start paper trading immediately — no credit card required.</p>
+        </div>
+        <div class="faq-card">
+          <div class="faq-q"><span>📡</span> Where does market data come from?</div>
+          <p>All price data is streamed live from Binance via WebSocket, giving you real-time order books, trades and ticker prices.</p>
+        </div>
+        <div class="faq-card">
+          <div class="faq-q"><span>🔒</span> Is my account data secure?</div>
+          <p>Passwords are hashed with bcrypt, sessions managed with JWT + Redis, and all data is encrypted in transit.</p>
+        </div>
+        <div class="faq-card">
+          <div class="faq-q"><span>📊</span> What can I trade on Cryptara?</div>
+          <p>Currently BTC, ETH, SOL, BNB, XRP and ADA — all paired with USDT. More pairs coming soon.</p>
+        </div>
+        <div class="faq-card">
+          <div class="faq-q"><span>⚡</span> What order types are supported?</div>
+          <p>Market orders (instant fill) and limit orders (fill when price reaches your target) are both supported.</p>
+        </div>
+        <div class="faq-card">
+          <div class="faq-q"><span>🎯</span> Can I reset my portfolio?</div>
+          <p>Yes — reset your virtual balance and portfolio at any time from account settings to start fresh.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ────────────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img src="https://res.cloudinary.com/dlsr1ex0d/image/upload/v1772573282/cryptara_bdtjoj.jpg" alt="Cryptara" class="footer-logo"/>
+        <p>Real-time crypto paper trading platform.<br/>Built with Angular · Node.js · MongoDB · Redis.</p>
+      </div>
+
+      <div class="footer-links">
+        <div class="fcol">
+          <h4>Platform</h4>
+          <a routerLink="/auth/login">Login</a>
+          <a routerLink="/auth/register">Register</a>
+          <a routerLink="/dashboard">Dashboard</a>
+        </div>
+        <div class="fcol">
+          <h4>Markets</h4>
+          <a href="#">BTC/USDT</a>
+          <a href="#">ETH/USDT</a>
+          <a href="#">SOL/USDT</a>
+          <a href="#">BNB/USDT</a>
+        </div>
+        <div class="fcol">
+          <h4>Support</h4>
+          <a href="#">Documentation</a>
+          <a href="#">FAQ</a>
+          <a href="#">Contact</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 Cryptara. All rights reserved. For educational purposes only — not financial advice.</p>
+      <div class="footer-badges">
+        <span>🔒 Secure</span>
+        <span>⚡ Real-time</span>
+        <span>📊 Paper Trading</span>
+      </div>
+    </div>
+  </footer>
+
+</div>

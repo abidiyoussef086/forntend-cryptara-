@@ -1,0 +1,37 @@
+<div class="order-book">
+  <div class="panel-header">
+    <span class="panel-title">Order Book</span>
+    <span class="sym-badge">{{ symbol }}</span>
+  </div>
+
+  <div class="ob-cols">
+    <span class="col-label">Price (USDT)</span>
+    <span class="col-label right">Amount</span>
+    <span class="col-label right">Total</span>
+  </div>
+
+  <!-- Asks (sells) -->
+  <div class="ob-section asks">
+    <div class="ob-row" *ngFor="let ask of asks">
+      <div class="depth-bar ask-bar" [style.width]="(ask)['pct'] + '%'"></div>
+      <span class="price ask">{{ ask.price | number:'1.2-4' }}</span>
+      <span class="qty">{{ ask.qty | number:'1.4-4' }}</span>
+      <span class="total">{{ ask.total | number:'1.2-2' }}</span>
+    </div>
+  </div>
+
+  <!-- Spread -->
+  <div class="spread-row">
+    <span class="spread-val">Spread: {{ spread }}</span>
+  </div>
+
+  <!-- Bids (buys) -->
+  <div class="ob-section bids">
+    <div class="ob-row" *ngFor="let bid of bids">
+      <div class="depth-bar bid-bar" [style.width]="(bid)['pct'] + '%'"></div>
+      <span class="price bid">{{ bid.price | number:'1.2-4' }}</span>
+      <span class="qty">{{ bid.qty | number:'1.4-4' }}</span>
+      <span class="total">{{ bid.total | number:'1.2-2' }}</span>
+    </div>
+  </div>
+</div>

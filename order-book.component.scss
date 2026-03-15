@@ -1,0 +1,92 @@
+$card: #0f1828; $border: rgba(255,255,255,0.07);
+$text: #dde4f0; $muted: #4e6074;
+$up: #00f5c4; $down: #ff4d6d;
+
+:host { display: block; height: 100%; }
+
+.order-book {
+  background: $card;
+  border: 1px solid $border;
+  border-radius: 14px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  font-family: 'DM Sans', sans-serif;
+  overflow: hidden;
+}
+
+.panel-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 1.25rem 0.75rem;
+  border-bottom: 1px solid $border;
+}
+
+.panel-title {
+  font-size: 0.78rem; font-weight: 700;
+  color: $muted; text-transform: uppercase; letter-spacing: 0.08em;
+}
+
+.sym-badge {
+  font-size: 0.72rem; font-weight: 700;
+  background: rgba(240,180,41,0.08);
+  border: 1px solid rgba(240,180,41,0.15);
+  color: #f0b429;
+  padding: 0.2rem 0.6rem; border-radius: 6px;
+}
+
+.ob-cols {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  padding: 0.4rem 1.25rem;
+  border-bottom: 1px solid $border;
+
+  .col-label {
+    font-size: 0.68rem; color: $muted;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    &.right { text-align: right; }
+  }
+}
+
+.ob-section { overflow-y: auto; flex: 1; }
+
+.ob-row {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  padding: 0.22rem 1.25rem;
+  position: relative;
+  transition: background 0.1s;
+  &:hover { background: rgba(255,255,255,0.02); }
+}
+
+.depth-bar {
+  position: absolute;
+  top: 0; bottom: 0;
+  opacity: 0.06;
+  transition: width 0.3s ease;
+  pointer-events: none;
+  &.ask-bar { background: $down; right: 0; }
+  &.bid-bar { background: $up; right: 0; }
+}
+
+.price {
+  font-size: 0.8rem; font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  &.ask { color: $down; }
+  &.bid { color: $up; }
+}
+
+.qty, .total {
+  font-size: 0.78rem; color: $muted;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.spread-row {
+  padding: 0.4rem 1.25rem;
+  background: rgba(255,255,255,0.02);
+  border-top: 1px solid $border;
+  border-bottom: 1px solid $border;
+
+  .spread-val {
+    font-size: 0.75rem; color: $muted;
+    font-variant-numeric: tabular-nums;
+  }
+}
